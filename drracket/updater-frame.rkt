@@ -1,0 +1,56 @@
+#lang racket/gui
+
+(provide updater)
+
+(require "../main.rkt")
+
+(define (updater to-update)
+  (define frame (new frame% 
+                     [label "Updater"]
+                     [width 300]
+                     ))
+
+  (define top-panel (new group-box-panel%
+                         (parent frame)
+                         (label "Do you want to update?")))
+
+
+  (define msg (new message% 
+		   [parent top-panel]
+                   [label (~a "\n" (string-join (map ~a to-update) 
+                                                "\n")
+                              "\n")]))
+
+  (define panel (new horizontal-panel% 
+                     [parent top-panel]
+                     [alignment '(center center)]
+                    ; [min-width 400]
+                    ; [stretchable-width 400]
+                     ))
+
+  (new button% [parent panel]
+       [label "Yes"]
+       [callback (lambda (button event)
+                   (send text insert "Updating.  This will close automatically upon completion..." ) 
+
+                   ;TODO: Pipe the output of update-if-needed! into the text frame in real time...
+      	           (update-if-needed! to-update)
+
+                   (send frame show #f) )])
+
+  (new button% [parent panel]
+       [label "No"]
+       [callback (lambda (button event)
+		   (send frame show #f))])
+
+  (define editor-canvas (new editor-canvas%
+			     (parent frame)
+			     (label "Editor Canvas")))
+
+  (define text (new text%))
+  (send editor-canvas set-editor text)
+
+  (send frame show #t))
+
+
+;(updater '( game-engine etc))
