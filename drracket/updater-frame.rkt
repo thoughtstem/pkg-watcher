@@ -30,7 +30,7 @@
   (new button% [parent panel]
        [label "Yes"]
        [callback (lambda (button event)
-                   (send text insert "Updating.  This will close\nautomatically upon completion..." ) 
+                   (send text insert "This will close after updating.  Wait..." ) 
 
                    ;TODO: Pipe the output of update-if-needed! into the text frame in real time...
       	           (update-if-needed! to-update)
