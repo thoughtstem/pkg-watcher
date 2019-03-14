@@ -7,8 +7,7 @@
 (define (updater to-update)
   (define frame (new frame% 
                      [label "Updater"]
-                     [width 300]
-                     ))
+                     [width 400]))
 
   (define top-panel (new group-box-panel%
                          (parent frame)
@@ -31,7 +30,7 @@
   (new button% [parent panel]
        [label "Yes"]
        [callback (lambda (button event)
-                   (send text insert "Updating.  This will close automatically upon completion..." ) 
+                   (send text insert "Updating.  This will close\nautomatically upon completion..." ) 
 
                    ;TODO: Pipe the output of update-if-needed! into the text frame in real time...
       	           (update-if-needed! to-update)
@@ -53,4 +52,4 @@
   (send frame show #t))
 
 
-;(updater '( game-engine etc))
+(updater '( game-engine etc))
