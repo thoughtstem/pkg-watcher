@@ -52,4 +52,3 @@
   (send frame show #t))
 
 
-(updater '( game-engine etc))
