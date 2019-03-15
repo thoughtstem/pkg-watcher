@@ -14,7 +14,7 @@
     
     (define to-update 
       (with-handlers ([exn? (lambda (e)
-                              (void))])
+                              '())])
                      (filter-needs-update watch-list)))
 
     (if (not (empty? to-update))
