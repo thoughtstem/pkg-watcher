@@ -6,7 +6,8 @@
 
 (require pkg pkg/path 
          (only-in pkg/private/stage remote-package-checksum) 
-         pkg/lib)
+         pkg/lib
+         "./watchlist.rkt")
 
 (define (local-version-for name)
   (define db (read-pkgs-db 'user))
@@ -49,10 +50,20 @@
 (define (update-if-needed! pkgs)
   (define to-update (filter package-needs-update? pkgs))
   
-  (if (not (empty? to-update))
+  (unless (empty? to-update) 
     (with-pkg-lock 
-      (pkg-update (map ~a to-update) #:dep-behavior 'search-auto))
-    (void)))
+      (pkg-update (map ~a to-update) #:dep-behavior 'search-auto)))
+  
+
+  (unless (empty? callback-list) 
+    (for ([p callback-list])
+      (call p))))
+
+
+(define (call p)
+  (define callback (dynamic-require p 'callback)) 
+
+  (callback))
 
 
 

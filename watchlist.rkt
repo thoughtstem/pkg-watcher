@@ -1,40 +1,61 @@
 #lang racket
 
-(provide watch-list
-         watch!
-         unwatch!)
+(require (for-syntax syntax/parse))
 
-(define (watch-list-file) 
+(define-syntax (persistent-list stx)
+  (syntax-parse stx
+    [(persistent-list list-name add! remove! storage-path) 
+     (quasisyntax 
+       (begin
+         (provide list-name
+                  add!
+                  remove!)
+
+         (define (get-file) 
+           storage-path)
+
+         (define (save-list l)
+           (with-output-to-file #:exists 'replace
+                                (get-file)
+                                (thunk (displayln (~s l)))))
+
+         (if (not (file-exists? (get-file)))
+           (save-list '())
+           (void))
+
+         (define list-name (read (open-input-file (get-file)))) 
+
+
+         (define/contract (add! thing)
+                          (-> symbol? void?)
+
+                          (set! list-name 
+                            (remove-duplicates (append list-name (list thing))))
+
+                          (save-list list-name))
+
+
+         (define/contract (remove! thing)
+                          (-> symbol? void?)
+
+                          (set! list-name (filter-not (curry eq? thing) list-name ))
+                          (save-list list-name))
+
+         ))]))
+
+
+(persistent-list
+  watch-list
+  watch!
+  unwatch!
   (build-path (find-system-path 'home-dir) 
               ".racket-pkg-sync"))
 
-(define (save-watch-list l)
-  (with-output-to-file #:exists 'replace
-                       (watch-list-file)
-                       (thunk (displayln (~s l)))))
-
-(if (not (file-exists? (watch-list-file)))
-    (save-watch-list '())
-    (void))
-
-(define watch-list (read (open-input-file (watch-list-file)))) 
-
-
-(define/contract (watch! pkg)
-  (-> symbol? void?)
-
-  (set! watch-list 
-    (remove-duplicates (append watch-list (list pkg))))
-  
-  (save-watch-list watch-list))
-
-
-(define/contract (unwatch! pkg)
-  (-> symbol? void?)
-
-  (set! watch-list 
-    (filter-not (curry eq? pkg) watch-list ))
-  
-  (save-watch-list watch-list))
+(persistent-list
+  callback-list
+  add-callback!
+  remove-callback!
+  (build-path (find-system-path 'home-dir) 
+              ".racket-pkg-sync-callbacks"))
 
 
