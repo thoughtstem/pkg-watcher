@@ -4,7 +4,7 @@
          filter-needs-update
          update-if-needed!)
 
-(require pkg pkg/path 
+(require pkg pkg/path setup/setup
          (only-in pkg/private/stage remote-package-checksum) 
          pkg/lib
          "./watchlist.rkt")
@@ -48,12 +48,13 @@
   (filter package-needs-update? pkgs))
 
 (define (update-if-needed! pkgs)
-  (define to-update (filter package-needs-update? pkgs))
+  (define to-update 
+    (~a (filter package-needs-update? pkgs)))
   
   (unless (empty? to-update) 
     (with-pkg-lock 
-      (pkg-update (map ~a to-update) #:dep-behavior 'search-auto)))
-  
+      (pkg-update to-update #:dep-behavior 'search-auto))
+    (setup #:collections (list (map list to-update))))
 
   (unless (empty? callback-list) 
     (for ([p callback-list])
