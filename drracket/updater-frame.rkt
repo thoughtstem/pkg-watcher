@@ -7,18 +7,13 @@
 (define (updater to-update)
   (define frame (new frame% 
                      [label "Updater"]
-                     [width 400]))
+                     [width 400]
+                     [height 400]
+                     ))
 
   (define top-panel (new group-box-panel%
                          (parent frame)
                          (label "Do you want to update?")))
-
-
-  (define msg (new message% 
-		   [parent top-panel]
-                   [label (~a "\n" (string-join (map ~a to-update) 
-                                                "\n")
-                              "\n")]))
 
   (define panel (new horizontal-panel% 
                      [parent top-panel]
@@ -47,8 +42,8 @@
 			     (label "Editor Canvas")))
 
   (define text (new text%))
+  (send text insert (string-join (map ~a to-update) "\n"))
   (send editor-canvas set-editor text)
 
   (send frame show #t))
-
 
