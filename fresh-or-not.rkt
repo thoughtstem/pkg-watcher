@@ -49,7 +49,7 @@
 
 (define (update-if-needed! pkgs)
   (define to-update 
-    (~a (filter package-needs-update? pkgs)))
+    (map ~a (filter package-needs-update? pkgs)))
   
   (unless (empty? to-update) 
     (with-pkg-lock 
