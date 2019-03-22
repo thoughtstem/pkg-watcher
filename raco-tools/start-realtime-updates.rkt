@@ -4,5 +4,5 @@
 
 (let loop ()
   (update-watched-packages!)
-  (sleep 1)
+  (sleep 10)
   (loop))
