@@ -59,7 +59,7 @@
   (unless (empty? to-update) 
     (with-pkg-lock 
       (pkg-update to-update #:dep-behavior 'search-auto))
-    (setup #:collections (list (map list to-update))))
+    (setup #:collections (map list to-update)))
 
   (unless (empty? callback-list) 
     (for ([p callback-list])
