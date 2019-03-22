@@ -49,8 +49,8 @@
   (filter package-needs-update? pkgs))
 
 (define (update-watched-packages!)
-  (update-if-needed priority-watch-list) 
-  (update-if-needed watch-list))
+  (update-if-needed! priority-watch-list) 
+  (update-if-needed! watch-list))
 
 (define (update-if-needed! pkgs)
   (define to-update 
