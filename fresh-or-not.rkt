@@ -2,7 +2,8 @@
 
 (provide package-needs-update?
          filter-needs-update
-         update-if-needed!)
+         update-if-needed!
+         update-watched-packages!)
 
 (require pkg pkg/path setup/setup
          (only-in pkg/private/stage remote-package-checksum) 
@@ -46,6 +47,10 @@
 
 (define (filter-needs-update pkgs)
   (filter package-needs-update? pkgs))
+
+(define (update-watched-packages!)
+  (update-if-needed priority-watch-list) 
+  (update-if-needed watch-list))
 
 (define (update-if-needed! pkgs)
   (define to-update 

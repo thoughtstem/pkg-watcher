@@ -1,6 +1,6 @@
 #lang racket/gui
 
-(require drracket/tool pkg-watcher "./updater-frame.rkt")
+(require drracket/tool pkg-watcher)
  
 (provide tool@)
  
@@ -11,14 +11,8 @@
     (define (phase1) (void))
     (define (phase2) (void))
 
-    
-    (define to-update 
-      (with-handlers ([exn? (lambda (e)
-                              '())])
-                     (filter-needs-update watch-list)))
 
-    (if (not (empty? to-update))
-        (updater to-update)
-      (void))))
+    (update-watched-packages!)))
+
 
 

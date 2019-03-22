@@ -59,3 +59,9 @@
               ".racket-pkg-sync-callbacks"))
 
 
+(persistent-list
+  priority-watch-list
+  priority-watch!
+  priority-unwatch!
+  (build-path (find-system-path 'home-dir) 
+              ".priority-racket-pkg-sync"))
