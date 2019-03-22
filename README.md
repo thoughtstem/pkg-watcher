@@ -1,3 +1,6 @@
-kata-installer
+pkg-watcher
 ==============
-README text here.
+
+This is a package for watching and auto-updating other packages.
+
+
