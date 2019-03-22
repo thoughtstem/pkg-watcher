@@ -58,7 +58,7 @@
     (map ~a (filter package-needs-update? pkgs)))
   
   (unless (empty? to-update) 
-    (with-pkg-lock/read-only
+    (with-pkg-lock
       (pkg-update to-update #:dep-behavior 'search-auto))
     (setup #:collections (map list to-update)))
 
