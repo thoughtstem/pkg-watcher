@@ -31,9 +31,10 @@
 (define (remote-version-for package-source)
   (define src (package-name->source package-source))
   
-  (if (and src (not (eq? 'link (first src))))
-    (remote-package-checksum src printf (~a package-source))
-    #f))
+  (with-handlers ([exn:fail? (thunk* (displayln "No wifi?"))])
+                 (if (and src (not (eq? 'link (first src))))
+                   (remote-package-checksum src printf (~a package-source))
+                   #f)))
 
 (define (package-needs-update? pkg-name)
   (define l (local-version-for pkg-name))
@@ -57,7 +58,7 @@
     (map ~a (filter package-needs-update? pkgs)))
   
   (unless (empty? to-update) 
-    (with-pkg-lock 
+    (with-pkg-lock/read-only
       (pkg-update to-update #:dep-behavior 'search-auto))
     (setup #:collections (map list to-update)))
 
