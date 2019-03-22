@@ -12,7 +12,7 @@
     (define (phase2) (void))
 
 
-    (update-watched-packages!)))
+    (thread (thunk (update-watched-packages!)))))
 
 
 
