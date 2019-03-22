@@ -9,7 +9,9 @@
 
 
 (define raco-commands
-  '(("update-watched-packages" pkg-watcher/raco-tools/update-watched-packages "Updates anything that has been (watch! __)ed by pkg-watcher" 100)
+  '(
+    ("update-watched-packages" pkg-watcher/raco-tools/update-watched-packages "Updates anything that has been (watch! __)ed by pkg-watcher" 100)
+    ("start-realtime-updates" pkg-watcher/raco-tools/start-realtime-updates "Starts a process that gets updates whenever they are pushed" 100)
 ))
 
 (define drracket-tool-names (list "Package Watcher"))
