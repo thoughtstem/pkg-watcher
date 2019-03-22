@@ -1,6 +1,6 @@
 #lang racket/gui
 
-(require drracket/tool pkg-watcher)
+(require drracket/tool pkg-watcher racket/gui)
  
 (provide tool@)
  
@@ -12,7 +12,9 @@
     (define (phase2) (void))
 
 
-    (thread (thunk (update-watched-packages!)))))
+    (thread 
+      (thunk (update-watched-packages!)
+             (message-box "Finished" "Updates complete!")))))
 
 
 
