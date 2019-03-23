@@ -66,15 +66,15 @@
            #:make-doc-index? #f))
 
   (unless (empty? callback-list) 
-    (with-handlers ([exn:fail? (thunk* (void))])
-                   (for ([p callback-list])
-                     (call p)))))
+    (for ([p callback-list])
+        (call p))))
 
 
 (define (call p)
-  (define callback (dynamic-require p 'callback)) 
-
-  (callback))
-
+  ;Callback might not exist.  Silently fail for now.
+  ;  Later we can define better semantics for this.
+  (with-handlers ([exn:fail? (thunk* (void))])
+                 (define callback (dynamic-require p 'callback)) 
+                 (callback)) ) 
 
 
