@@ -66,8 +66,9 @@
            #:make-doc-index? #f))
 
   (unless (empty? callback-list) 
-    (for ([p callback-list])
-      (call p))))
+    (with-handlers ([exn:fail? (thunk* (void))])
+                   (for ([p callback-list])
+                     (call p)))))
 
 
 (define (call p)
