@@ -11,9 +11,8 @@
     (define (phase1) (void))
     (define (phase2) (void))
 
-
     (thread 
-      (thunk (update-watched-packages!)
+      (thunk (update-if-needed! priority-watch-list)
              (message-box "Finished" "Updates complete!")))))
 
 
