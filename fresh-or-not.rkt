@@ -60,7 +60,9 @@
   (unless (empty? to-update) 
     (with-pkg-lock
       (pkg-update to-update #:dep-behavior 'search-auto))
-    (setup #:collections (map list to-update)))
+
+    (setup #:collections (map list to-update)
+           #:make-doc-index? #t))
 
   (unless (empty? callback-list) 
     (for ([p callback-list])
